@@ -2,16 +2,16 @@ import argparse
 import os
 from tqdm import tqdm
 
-from .utilities import read_jsonl, write_jsonl, format_text, extract_frames
+from utilities import read_jsonl, write_jsonl, format_text, extract_frames
 from collections import defaultdict
 
-from .api import OpenAIAPI
+from api import OpenAIAPI
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("--model", type=str)
     arg_parser.add_argument("--method", type=str)
-    arg_parser.add_argument("--api", type=str, default="openai")
+    arg_parser.add_argument("--api", type=str)
     arg_parser.add_argument("--api_key", type=str, default=None)
     arg_parser.add_argument(
         "--split",
