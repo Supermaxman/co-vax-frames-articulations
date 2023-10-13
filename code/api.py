@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import os
 import time
+from hashlib import sha512
 
 import openai
 import json
@@ -39,7 +40,7 @@ class OpenAIAPI(ChatAPI):
 
     def send(self, messages):
         # check to see if we have a cached api response
-        hash_key = str(hash(json.dumps(messages, sort_keys=True)))
+        hash_key = sha512(json.dumps(messages, sort_keys=True).encode()).hexdigest()
         if self.cache_path is not None:
             cache_file = os.path.join(self.cache_path, f"{hash_key}.json")
             if os.path.exists(cache_file):
