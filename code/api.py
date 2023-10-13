@@ -31,6 +31,7 @@ class OpenAIAPI(ChatAPI):
         delay_seconds: int = 6,
         api_key: str = None,
         cache_path: str = None,
+        base_api: str = None,
     ):
         super().__init__(api_key, cache_path)
         openai.api_key = self.api_key
@@ -38,7 +39,11 @@ class OpenAIAPI(ChatAPI):
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.delay_seconds = delay_seconds
-
+        self.base_api = base_api
+        self.api_model = self.model
+        if self.base_api is not None:
+            openai.api_base = self.base_api
+        
     def send(self, messages):
         # check to see if we have a cached api response
         hash_key = sha512(json.dumps(messages, sort_keys=True).encode()).hexdigest()
@@ -52,7 +57,7 @@ class OpenAIAPI(ChatAPI):
         while True:
             try:
                 api_response = openai.ChatCompletion.create(
-                    model=self.model,
+                    model=self.api_model,
                     messages=messages,
                     temperature=self.temperature,
                     max_tokens=self.max_tokens,
@@ -80,6 +85,15 @@ class OpenAIAPI(ChatAPI):
             "content": response["choices"][0]["message"]["content"],
         }
         return message
+
+class DeepInfraAPI(OpenAIAPI):
+    deepinfra_models = {
+        "llama-2": "meta-llama/Llama-2-70b-chat-hf"
+    }
+    def __init__(self, model: str, temperature: float = 0, max_tokens: int = 512, delay_seconds: int = 6, api_key: str = None, cache_path: str = None, base_api: str = "https://api.deepinfra.com/v1/openai"):
+        super().__init__(model, temperature, max_tokens, delay_seconds, api_key, cache_path, base_api)
+        self.api_model = self.deepinfra_models[self.model]
+
 
 class ReplicateAPI(ChatAPI):
     replicate_models = {
@@ -166,4 +180,5 @@ class ReplicateAPI(ChatAPI):
             "content": response["content"],
         }
         return message
+
 
