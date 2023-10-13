@@ -55,7 +55,10 @@ def extract_frames(message):
         if not line:
             continue
         m_id = line.split(":")[0]
-        mf_id, mt = m_id.split(".")
+        try:
+            mf_id, mt = m_id.split(".")
+        except:
+            return []
         content = line[len(m_id) + 1 :].strip()
         if mt == "a":
             reasoning = content
