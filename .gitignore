@@ -4,7 +4,7 @@ private/*
 results/*
 saved_models/*
 artifacts/*
-vscode/*
+.vscode/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
