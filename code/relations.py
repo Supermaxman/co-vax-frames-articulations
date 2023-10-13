@@ -130,6 +130,7 @@ if __name__ == "__main__":
                 else:
                     print(f'Unknown relation type: {rel["type"]}')
             current_index += 1
+            pbar.update(1)
 
     pred_path = os.path.join(artifacts_path, "predictions")
     os.makedirs(pred_path, exist_ok=True)
