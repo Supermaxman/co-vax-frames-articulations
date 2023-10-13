@@ -93,6 +93,8 @@ if __name__ == "__main__":
         frame["count"] = dup_count[frame["text"]]
 
     pred_path = os.path.join(artifacts_path, "predictions")
+    os.makedirs(pred_path, exist_ok=True)
+
     write_jsonl(all_articulations, os.path.join(pred_path, "articulations-full.jsonl"))
     write_jsonl(
         unique_articulations, os.path.join(pred_path, "articulations-unique.jsonl")
