@@ -5,7 +5,7 @@ from tqdm import tqdm
 from utilities import read_jsonl, write_jsonl, format_text, extract_frames
 from collections import defaultdict
 
-from api import OpenAIAPI, ReplicateAPI, DeepInfraAPI
+from api import OpenAIAPI, ReplicateAPI, DeepInfraAPI, FastChatAPI
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
@@ -68,6 +68,17 @@ if __name__ == "__main__":
             temperature=args.temperature,
             max_tokens=args.max_tokens,
             delay_seconds=6,
+            api_key=args.api_key,
+            cache_path=cache_path,
+        )
+    elif args.api == "fastchat":
+        cache_path = os.path.join(artifacts_path, "fastchat-cache")
+        os.makedirs(cache_path, exist_ok=True)
+        api = FastChatAPI(
+            model=args.model,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+            delay_seconds=1,
             api_key=args.api_key,
             cache_path=cache_path,
         )

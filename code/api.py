@@ -104,6 +104,15 @@ class DeepInfraAPI(OpenAIAPI):
         self.api_model = self.deepinfra_models[self.model]
 
 
+class FastChatAPI(OpenAIAPI):
+    fastchat_models = {
+        "vicuna": "vicuna-13b-v1.5"
+    }
+    def __init__(self, model: str, temperature: float = 0, max_tokens: int = 512, delay_seconds: int = 1, api_key: str = None, cache_path: str = None, base_api: str = "http://localhost:8000/v1"):
+        api_key = "EMPTY"
+        super().__init__(model, temperature, max_tokens, delay_seconds, api_key, cache_path, base_api, system_as_user_prompt = False)
+        self.api_model = self.fastchat_models[self.model]
+
 class ReplicateAPI(ChatAPI):
     replicate_models = {
         "llama-2": "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3"
