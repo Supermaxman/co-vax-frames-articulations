@@ -51,6 +51,7 @@ if __name__ == "__main__":
 
     if args.api == "openai":
         cache_path = os.path.join(artifacts_path, "openai-cache")
+        os.makedirs(cache_path, exist_ok=True)
         api = OpenAIAPI(
             model=args.model,
             temperature=args.temperature,
