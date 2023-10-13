@@ -128,15 +128,13 @@ class ReplicateAPI(ChatAPI):
             try:
 
                 system_prompt, prompt = self.build_prompt(messages)
-                print(system_prompt)
-                print(prompt)
 
                 output = replicate.run(
                     self.replicate_model,
                     input={
                         "system_prompt": system_prompt,
                         "prompt": prompt,
-                        "temperature": self.temperature,
+                        "temperature": 0.01 if self.temperature == 0 else self.temperature,
                         "max_new_tokens": self.max_tokens,
                     },
                 )
@@ -144,7 +142,6 @@ class ReplicateAPI(ChatAPI):
                 api_response = {
                     "content": "".join(output_tokens),
                 }
-                print(api_response["content"])
 
                 # rate limit requests
                 time.sleep(self.delay_seconds)
