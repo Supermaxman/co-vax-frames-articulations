@@ -67,7 +67,7 @@ if __name__ == "__main__":
     all_articulations = []
     articulated_examples = []
     annotations = []
-    for idx, ex in tqdm(enumerate(data)):
+    for ex in tqdm(data):
         text = format_text(ex["text"])
         message = api.build_message(text)
         messages = prompt_messages + [message]

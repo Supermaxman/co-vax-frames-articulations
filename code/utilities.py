@@ -1,6 +1,6 @@
 import re
 from textwrap import wrap
-import json
+import ujson as json
 
 
 def read_jsonl(path):
