@@ -2,8 +2,61 @@ import re
 from textwrap import wrap
 from collections import defaultdict
 import networkx as nx
+import os
 
 import ujson as json
+
+from api import OpenAIAPI, ReplicateAPI, DeepInfraAPI, FastChatAPI
+
+
+def build_api(args, artifacts_path):
+    if args.api == "openai":
+        cache_path = os.path.join(artifacts_path, "openai-cache")
+        os.makedirs(cache_path, exist_ok=True)
+        api = OpenAIAPI(
+            model=args.model,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+            delay_seconds=6,
+            api_key=args.api_key,
+            cache_path=cache_path,
+        )
+    elif args.api == "deepinfra":
+        cache_path = os.path.join(artifacts_path, "deepinfra-cache")
+        os.makedirs(cache_path, exist_ok=True)
+        api = DeepInfraAPI(
+            model=args.model,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+            delay_seconds=6,
+            api_key=args.api_key,
+            cache_path=cache_path,
+        )
+    elif args.api == "fastchat":
+        cache_path = os.path.join(artifacts_path, "fastchat-cache")
+        os.makedirs(cache_path, exist_ok=True)
+        api = FastChatAPI(
+            model=args.model,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+            delay_seconds=1,
+            api_key=args.api_key,
+            cache_path=cache_path,
+        )
+    elif args.api == "replicate":
+        cache_path = os.path.join(artifacts_path, "replicate-cache")
+        os.makedirs(cache_path, exist_ok=True)
+        api = ReplicateAPI(
+            model=args.model,
+            temperature=args.temperature,
+            max_tokens=args.max_tokens,
+            delay_seconds=6,
+            api_key=args.api_key,
+            cache_path=cache_path,
+        )
+    else:
+        raise ValueError(f"Unknown api: {args.api}")
+    return api
 
 
 def read_jsonl(path):

@@ -2,10 +2,9 @@ import argparse
 import os
 from tqdm import tqdm
 
-from utilities import read_jsonl, write_jsonl, format_text, extract_frames
+from utilities import read_jsonl, write_jsonl, format_text, extract_frames, build_api
 from collections import defaultdict
 
-from api import OpenAIAPI, ReplicateAPI, DeepInfraAPI, FastChatAPI
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
@@ -49,52 +48,7 @@ if __name__ == "__main__":
         )
     )
 
-    if args.api == "openai":
-        cache_path = os.path.join(artifacts_path, "openai-cache")
-        os.makedirs(cache_path, exist_ok=True)
-        api = OpenAIAPI(
-            model=args.model,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            delay_seconds=6,
-            api_key=args.api_key,
-            cache_path=cache_path,
-        )
-    elif args.api == "deepinfra":
-        cache_path = os.path.join(artifacts_path, "deepinfra-cache")
-        os.makedirs(cache_path, exist_ok=True)
-        api = DeepInfraAPI(
-            model=args.model,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            delay_seconds=6,
-            api_key=args.api_key,
-            cache_path=cache_path,
-        )
-    elif args.api == "fastchat":
-        cache_path = os.path.join(artifacts_path, "fastchat-cache")
-        os.makedirs(cache_path, exist_ok=True)
-        api = FastChatAPI(
-            model=args.model,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            delay_seconds=1,
-            api_key=args.api_key,
-            cache_path=cache_path,
-        )
-    elif args.api == "replicate":
-        cache_path = os.path.join(artifacts_path, "replicate-cache")
-        os.makedirs(cache_path, exist_ok=True)
-        api = ReplicateAPI(
-            model=args.model,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            delay_seconds=6,
-            api_key=args.api_key,
-            cache_path=cache_path,
-        )
-    else:
-        raise ValueError(f"Unknown api: {args.api}")
+    api = build_api(args, artifacts_path)
 
     responses = []
     all_articulations = []

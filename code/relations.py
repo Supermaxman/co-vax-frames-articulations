@@ -17,10 +17,9 @@ from utilities import (
     reduce_paraphrases,
     merge_relations,
     clean_reasoning,
+    build_api,
 )
 from collections import defaultdict
-
-from api import OpenAIAPI
 
 
 if __name__ == "__main__":
@@ -66,20 +65,9 @@ if __name__ == "__main__":
         )
     )
 
-    if args.api == "openai":
-        cache_path = os.path.join(artifacts_path, "openai-cache")
-        os.makedirs(cache_path, exist_ok=True)
-        api = OpenAIAPI(
-            model=args.model,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            delay_seconds=6,
-            api_key=args.api_key,
-            cache_path=cache_path,
-        )
-    else:
-        raise ValueError(f"Unknown api: {args.api}")
+    api = build_api(args, artifacts_path)
 
+    
     if args.similarity == "sbert":
         embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
     else:

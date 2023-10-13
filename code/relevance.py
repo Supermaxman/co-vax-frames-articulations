@@ -9,21 +9,13 @@ import ujson as json
 from utilities import (
     read_jsonl,
     write_jsonl,
-    format_prompt,
-    extract_relations,
-    rel_order,
-    format_reasoning,
     extract_problems,
     count_problems,
     reduce_paraphrases,
     merge_relations,
     clean_reasoning,
-    annotate_relations,
 )
-from annotations import annotate_frames, annotate_relations
-from collections import defaultdict
-
-from api import OpenAIAPI
+from annotate import annotate_frames, annotate_relations
 
 
 if __name__ == "__main__":
