@@ -54,8 +54,8 @@ def extract_frames(message):
         line = line.strip()
         if not line:
             continue
-        m_id = line.split(":")[0]
         try:
+            m_id = line.split(":")[0]
             mf_id, mt = m_id.split(".")
         except:
             return []
