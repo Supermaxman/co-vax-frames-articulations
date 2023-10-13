@@ -59,11 +59,16 @@ class OpenAIAPI(ChatAPI):
         while True:
             try:
                 if self.system_as_user_prompt:
-                    system_prompt = messages[0]
-
                     messages = [
-                        {"role": "user", "content": system_prompt["content"]},
-                    ] + messages[1:]
+                        # system prompt
+                        {"role": "user", "content": messages[0]["content"]},
+                        {"role": "assistant", "content": ""},
+                        # task prompt
+                        {"role": "user", "content": messages[1]["content"]},
+                        {"role": "assistant", "content": ""},
+                    ] + messages[2:]
+
+
                 api_response = openai.ChatCompletion.create(
                     model=self.api_model,
                     messages=messages,
