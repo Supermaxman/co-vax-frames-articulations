@@ -60,13 +60,9 @@ class OpenAIAPI(ChatAPI):
             try:
                 if self.system_as_user_prompt:
                     messages = [
-                        # system prompt
-                        {"role": "user", "content": messages[0]["content"]},
-                        {"role": "assistant", "content": ""},
-                        # task prompt
-                        {"role": "user", "content": messages[1]["content"]},
-                        {"role": "assistant", "content": ""},
-                    ] + messages[2:]
+                        # system prompt, task prompt, and example prompt all together
+                        {"role": "user", "content": "\n".join([c["content"] for c in messages[:3]])},
+                    ] + messages[3:]
 
 
                 api_response = openai.ChatCompletion.create(
