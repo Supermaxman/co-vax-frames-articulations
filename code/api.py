@@ -32,6 +32,7 @@ class OpenAIAPI(ChatAPI):
         api_key: str = None,
         cache_path: str = None,
         base_api: str = None,
+        system_as_user_prompt: bool = False,
     ):
         super().__init__(api_key, cache_path)
         openai.api_key = self.api_key
@@ -41,6 +42,7 @@ class OpenAIAPI(ChatAPI):
         self.delay_seconds = delay_seconds
         self.base_api = base_api
         self.api_model = self.model
+        self.system_as_user_prompt = system_as_user_prompt
         if self.base_api is not None:
             openai.api_base = self.base_api
         
@@ -56,6 +58,12 @@ class OpenAIAPI(ChatAPI):
                 return response
         while True:
             try:
+                if self.system_as_user_prompt:
+                    system_prompt = messages[0]
+
+                    messages = [
+                        {"role": "user", "content": system_prompt["content"]},
+                    ] + messages[1:]
                 api_response = openai.ChatCompletion.create(
                     model=self.api_model,
                     messages=messages,
@@ -91,7 +99,7 @@ class DeepInfraAPI(OpenAIAPI):
         "llama-2": "meta-llama/Llama-2-70b-chat-hf"
     }
     def __init__(self, model: str, temperature: float = 0, max_tokens: int = 512, delay_seconds: int = 6, api_key: str = None, cache_path: str = None, base_api: str = "https://api.deepinfra.com/v1/openai"):
-        super().__init__(model, temperature, max_tokens, delay_seconds, api_key, cache_path, base_api)
+        super().__init__(model, temperature, max_tokens, delay_seconds, api_key, cache_path, base_api, system_as_user_prompt = True)
         self.api_model = self.deepinfra_models[self.model]
 
 
