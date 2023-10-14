@@ -156,6 +156,8 @@ class ReplicateAPI(ChatAPI):
                 with open(cache_file, "r") as f:
                     api_response = json.load(f)
                 response = self.process_response(api_response)
+                print(response)
+                exit()
                 return response
         while True:
             try:
