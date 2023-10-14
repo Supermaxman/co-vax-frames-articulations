@@ -156,14 +156,15 @@ class ReplicateAPI(ChatAPI):
                 with open(cache_file, "r") as f:
                     api_response = json.load(f)
                 response = self.process_response(api_response)
-                print(response)
-                exit()
                 return response
         while True:
             try:
 
                 system_prompt, prompt = self.build_prompt(messages)
-
+                print("System Prompt:")
+                print(system_prompt)
+                print("Prompt:")
+                print(prompt)
                 output = replicate.run(
                     self.replicate_model,
                     input={
@@ -177,6 +178,8 @@ class ReplicateAPI(ChatAPI):
                 api_response = {
                     "content": "".join(output_tokens),
                 }
+                print("Response: ")
+                print(api_response)
 
                 # rate limit requests
                 time.sleep(self.delay_seconds)
