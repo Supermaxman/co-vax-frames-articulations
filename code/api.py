@@ -116,7 +116,7 @@ class FastChatAPI(OpenAIAPI):
 class ReplicateAPI(ChatAPI):
     replicate_models = {
         "llama-2": "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
-        "vicuna-13b": "replicate/vicuna-13b:6282abe6a492de4145d7bb601023762212f9ddbbe78278bd6771c8b3b2f2a13b"
+        "vicuna-13b": "6282abe6a492de4145d7bb601023762212f9ddbbe78278bd6771c8b3b2f2a13b"
     }
     def __init__(
         self,
