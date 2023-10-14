@@ -172,6 +172,7 @@ class ReplicateAPI(ChatAPI):
                         "prompt": prompt,
                         "temperature": 0.01 if self.temperature == 0 else self.temperature,
                         "max_new_tokens": self.max_tokens,
+                        "max_length": 4096,
                     },
                 )
 
