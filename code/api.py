@@ -161,10 +161,6 @@ class ReplicateAPI(ChatAPI):
             try:
 
                 system_prompt, prompt = self.build_prompt(messages)
-                print("System Prompt:")
-                print(system_prompt)
-                print("Prompt:")
-                print(prompt)
                 prediction = replicate.predictions.create(
                     self.replicate_model,
                     input={
@@ -178,8 +174,8 @@ class ReplicateAPI(ChatAPI):
 
                 prediction.wait()
                 api_response = dict(prediction)
-                print("Response: ")
-                print(api_response)
+                if api_response["error"] is not None:
+                    raise Exception(api_response["error"])
 
                 # rate limit requests
                 time.sleep(self.delay_seconds)
@@ -201,7 +197,7 @@ class ReplicateAPI(ChatAPI):
     def process_response(self, response):
         message = {
             "role": "assistant",
-            "content": response["content"],
+            "content": "".join(response["output"]),
         }
         return message
 
