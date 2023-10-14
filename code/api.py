@@ -165,7 +165,7 @@ class ReplicateAPI(ChatAPI):
                 print(system_prompt)
                 print("Prompt:")
                 print(prompt)
-                output = replicate.run(
+                prediction = replicate.predictions.create(
                     self.replicate_model,
                     input={
                         "system_prompt": system_prompt,
@@ -174,10 +174,9 @@ class ReplicateAPI(ChatAPI):
                         "max_new_tokens": self.max_tokens,
                     },
                 )
-                output_tokens = list(output)
-                api_response = {
-                    "content": "".join(output_tokens),
-                }
+
+                prediction.wait()
+                api_response = dict(prediction)
                 print("Response: ")
                 print(api_response)
 
