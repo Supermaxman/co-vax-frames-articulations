@@ -12,11 +12,6 @@ from utilities import (
     extract_relations,
     rel_order,
     format_reasoning,
-    extract_problems,
-    count_problems,
-    reduce_paraphrases,
-    merge_relations,
-    clean_reasoning,
     build_api,
 )
 from collections import defaultdict
@@ -67,7 +62,6 @@ if __name__ == "__main__":
 
     api = build_api(args, artifacts_path)
 
-    
     if args.similarity == "sbert":
         embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
     else:
