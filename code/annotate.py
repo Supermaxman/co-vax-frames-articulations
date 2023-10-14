@@ -62,7 +62,7 @@ def create_excel(data, output_path, columns=None, labels=None):
     writer.close()
 
 
-def annotate_frames(frames, relations, counts, name, ref_frames, embed):
+def annotate_frames(frames, relations, counts, name, embed, ref_frames):
     r_embs = embed.encode([f["text"] for f in ref_frames])
     samples = []
     fs = list(order_hierarchy(frames, relations, counts))
